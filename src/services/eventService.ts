@@ -6,6 +6,7 @@ export interface Callback {
 
 export interface EventService {
     newEvent(callback: Callback): void
+    getEvents(): Promise<Array<Party>>
 }
 
 export class EventSeviceStub implements EventService {
@@ -14,4 +15,8 @@ export class EventSeviceStub implements EventService {
             name: "Nouveau group"
         }), 5000)
     }
+    getEvents(): Promise<Array<Party>> {
+        return Promise.resolve([])
+    }
 }
+
