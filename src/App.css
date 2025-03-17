@@ -1,9 +1,10 @@
 .bg-container {
-  background-image: url('/background.jpg'); /* Change l'URL selon ton image */
-  background-size: cover;
+  background-image: url('assets/bg.png'); /* Change l'URL selon ton image */
+  background-size: cover;  /* Remplit tout l'écran */
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
+  width: 100vw;  /* Largeur totale de l'écran */
+  height: 100vh; /* Hauteur totale de l'écran */
   display: flex;
   justify-content: center;
   align-items: center;
