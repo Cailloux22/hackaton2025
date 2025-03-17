@@ -35,4 +35,17 @@ body {
   font-family: "Neuropol", sans-serif;
   font-size: 32px;
   text-transform: uppercase;
+  text-align: center;
+}
+
+.title2 {
+  font-family: "Neuropol", sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
 }
