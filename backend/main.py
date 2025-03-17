@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from random import randint
 from datetime import datetime
 import xmlrpc.client, threading
+from fastapi.middleware.cors import CORSMiddleware
 
 sort_by_time = lambda groups: sorted(groups, key=lambda group: datetime.strptime(group.heurePassage, "%H:%M"))
 
@@ -138,6 +139,15 @@ repository: GroupRepository = GroupRepositoryOdoo(Config())
 #GroupRepositoryInMemory(fakeGroups)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/groups")
 async def getGroups(room: int = 1) -> List[Group]:
