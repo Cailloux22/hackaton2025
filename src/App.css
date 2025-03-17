@@ -49,3 +49,12 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.video {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 380px;
+  height: auto;
+  border-radius: 10px;
+}
