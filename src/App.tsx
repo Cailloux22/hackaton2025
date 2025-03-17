@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import logo from "./assets/logo_musiquiz.png";
 import { Group } from "./models/group";
 import { GroupService } from "./services/groupService";
 import { GroupServiceAPI } from "./services/groupServiceApi";
@@ -36,18 +35,14 @@ function App() {
 
   useEffect(() => {
     updateGroupsInfo()
-
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
+    if (timerRef.current) clearTimeout(timerRef.current);
   }, []);
 
   useEffect(() => updateGroupsInfo(), [roomId])
 
   return (
     <div className="bg-container">
-      {/* Logo en haut à gauche */}
-      <img src={logo} alt="logo" className="logo" />
+      <img src="logo_musiquiz.png" alt="logo" className="logo" />
 
       <div id="toast-bottom-left" className="fixed flex items-center max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-sm bottom-5 left-5">
         <select id="lang" onChange={(value) => setRoomId(Number.parseInt(value.target.value))} value={roomId}>
@@ -72,9 +67,8 @@ function App() {
         </div>
       </div>
 
-      {/* Vidéo en bas à droite */}
       {showVideo && (
-        <video className="video" autoPlay muted onEnded={handleVideoEnd}>
+        <video className="video" autoPlay loop muted onEnded={handleVideoEnd}>
           <source src="/video.m4v" type="video/mp4" />
           Votre navigateur ne supporte pas la lecture de vidéos.
         </video>
