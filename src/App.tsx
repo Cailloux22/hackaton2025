@@ -4,9 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 
 function App() {
   const [showVideo, setShowVideo] = useState(true);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null); // ✅ Fix du type
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ✅ Déplacer handleVideoEnd hors du useEffect
   const handleVideoEnd = () => {
     setShowVideo(false);
 
