@@ -1,13 +1,38 @@
 .bg-container {
-  background-image: url('assets/bg.png'); /* Change l'URL selon ton image */
-  background-size: cover;  /* Remplit tout l'écran */
+  background-image: url('assets/bg.png');
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 100vw;  /* Largeur totale de l'écran */
-  height: 100vh; /* Hauteur totale de l'écran */
+  width: 100vw;  
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  width: 130px;
+  height: auto;
+}
+
+@font-face {
+  font-family: "Neuropol";
+  src: url("assets/Neuropol.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Neuropol", sans-serif;
+}
+
+.title {
+  font-family: "Neuropol", sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
 }
