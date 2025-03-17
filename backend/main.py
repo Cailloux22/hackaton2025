@@ -8,17 +8,27 @@ from random import randint
 from datetime import datetime
 import xmlrpc.client, threading
 from fastapi.middleware.cors import CORSMiddleware
+import config
+
+# --------------------------------------
+# Utils
+# --------------------------------------
 
 sort_by_time = lambda groups: sorted(groups, key=lambda group: datetime.strptime(group.heurePassage, "%H:%M"))
 
-# MODEL
+# --------------------------------------
+# Models
+# --------------------------------------
+
 class Group(BaseModel):
     name: str
     heurePassage: str
     room: int
 
+# --------------------------------------
+# GroupRepository
+# --------------------------------------
 
-# Repository
 class GroupRepository(ABC):
     @abstractmethod
     def getGroups(self) -> List[Group]:
@@ -27,6 +37,10 @@ class GroupRepository(ABC):
     @abstractmethod
     def getCurrentGroup(self) -> Group:
         pass
+
+# --------------------------------------
+# GroupRepositoryInMemory
+# --------------------------------------
 
 class GroupRepositoryInMemory(GroupRepository):
     def __init__(self, groups: List[Group]):
@@ -52,6 +66,10 @@ fakeGroups = [
     Group(name="Soul Sisters", heurePassage="23:00", room=2)
 ]
 
+# --------------------------------------
+# GroupRepositoryOdoo
+# --------------------------------------
+
 @dataclass
 class Config:
     host: str = "https://funlabrennes-teste-19048326.dev.odoo.com"
@@ -60,8 +78,6 @@ class Config:
     user: str = "test"
     password: str = "ebfed02c7155123bfc2709e43ac94dca0e1e2572"
 
-
-
 class GroupRepositoryOdoo(GroupRepository):
     def __init__(self, config: Config):
         super().__init__()
@@ -69,7 +85,7 @@ class GroupRepositoryOdoo(GroupRepository):
         common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(config.host))
         self.uid = common.authenticate(config.db, config.user, config.password, {})
         self.models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(config.host))
-        set_interval(self, 10)
+        self.set_interval(10)
         
     def _update_content(self):
         print("Récupération des données")
@@ -127,22 +143,30 @@ class GroupRepositoryOdoo(GroupRepository):
     def getCurrentGroup(self) -> dict:
         return self.currentGroup
 
-def set_interval(repo: GroupRepositoryOdoo, sec):
-    def func_wrapper():
-        set_interval(repo, sec) 
-        repo._update_content()  
-    t = threading.Timer(sec, func_wrapper)
-    t.start()
-    return t
+    def set_interval(self, sec):
+        def func_wrapper():
+            self.set_interval(sec) 
+            self._update_content()  
+        t = threading.Timer(sec, func_wrapper)
+        t.start()
+        return t
+
+# --------------------------------------
+# Injection de dépendances
+# --------------------------------------
 
 repository: GroupRepository = GroupRepositoryOdoo(Config())
 #GroupRepositoryInMemory(fakeGroups)
+
+# --------------------------------------
+# Fast API
+# --------------------------------------
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=config.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -150,12 +174,12 @@ app.add_middleware(
 
 
 @app.get("/groups")
-async def getGroups(room: int = 1) -> List[Group]:
+async def getGroups(room: int = config.DEFAULT_ROOM_ID) -> List[Group]:
     return [group for group in sort_by_time(repository.getGroups()) if group.room == room]
 
 @app.get("/groups/current")
-async def getCurrentGroup(room: int = 1) -> Group:
+async def getCurrentGroup(room: int = config.DEFAULT_ROOM_ID) -> Group:
     return repository.getCurrentGroup()[str(room)]
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8080)
+    uvicorn.run(app, host="localhost", port=config.PORT)
