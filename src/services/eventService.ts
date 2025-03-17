@@ -1,22 +1,10 @@
-import { Party } from "../models/party";
+import { Group } from "../models/group";
 
 export interface Callback {
-    newEvent: (newParty: Party) => void
+    newEvent: (newParty: Group) => void
 }
 
 export interface EventService {
     newEvent(callback: Callback): void
-    getEvents(): Promise<Array<Party>>
+    getEvents(): Promise<Array<Group>>
 }
-
-export class EventSeviceStub implements EventService {
-    newEvent(callback: Callback): void {
-        setTimeout(() => callback.newEvent({
-            name: "Nouveau group"
-        }), 5000)
-    }
-    getEvents(): Promise<Array<Party>> {
-        return Promise.resolve([])
-    }
-}
-
