@@ -1,17 +1,19 @@
 import { Party } from "../models/party";
 
-export interface Callback {
-    newEvent: (newParty: Party) => void
-}
 
-export interface EventService {
-    newEvent(callback: Callback): void
-}
+export abstract class EventSeviceStub {
+    constructor(
+        private readonly partys: Party[] = [],
+        private readonly statusSwitchFunction: (updatedParty: Party) => void
+    ) {
+        setTimeout(() => statusSwitchFunction({
+            date: new Date(),
+            inProgress: true,
+            name: "test"
+        }), 3000)
+    }
 
-export class EventSeviceStub implements EventService {
-    newEvent(callback: Callback): void {
-        setTimeout(() => callback.newEvent({
-            name: "Nouveau group"
-        }), 5000)
+    getPartys(): Party[] {
+        return this.partys;
     }
 }
