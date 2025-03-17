@@ -1,15 +1,11 @@
-import './App.css'
-import { EventService, EventSeviceStub } from './services/eventService'
+import "./App.css";
 
 function App() {
-  const eventService: EventService = new EventSeviceStub()
-
   return (
-    <>
-      <div>
-      </div>
-    </>
-  )
+    <div className="bg-container">
+      <h1>Bienvenue sur ma page !</h1>
+    </div>
+  );
 }
 
-export default App
+export default App;
