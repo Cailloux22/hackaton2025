@@ -29,7 +29,13 @@ function App() {
     }
     )
     eventService.OnNewCurrentGroup(roomId,
-      (newParty) => setCurrentGroup(newParty),
+      (newParty) => {
+        eventService.getGroups(roomId).then((groupsApi) => {
+          setGroups(groupsApi.filter(group => group.name != newParty.name))
+        })
+
+        setCurrentGroup(newParty)
+      },
     )
   }
 
@@ -55,7 +61,7 @@ function App() {
         <div className="mb-3">
           <h1 className="title">Partie en cours</h1>
           {
-            currentGroup == undefined ? "Chargement ..." : <p>{currentGroup?.name}</p>
+            currentGroup == undefined ? "Chargement ..." : <div className="flex justify-between"><span>{currentGroup.name}</span> <span>{currentGroup.heurePassage}</span></div>
           }
 
         </div>

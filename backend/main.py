@@ -141,8 +141,8 @@ class GroupRepositoryOdoo(GroupRepository):
         return f"{hourSplit[0]}:{hourSplit[1]}"
     
     def isToday(self, date:str) -> bool:
-        datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-        today = datetime.now()
+        datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').date()
+        today = datetime.now().date()
         return datetime_object == today 
 
     def getGroups(self) -> List[Group]:
