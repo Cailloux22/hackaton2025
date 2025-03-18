@@ -9,6 +9,8 @@ from datetime import datetime
 import xmlrpc.client, threading
 from fastapi.middleware.cors import CORSMiddleware
 import config
+from fastapi.staticfiles import StaticFiles
+
 
 # --------------------------------------
 # Utils
@@ -188,6 +190,8 @@ async def getGroups(room: int = config.DEFAULT_ROOM_ID) -> List[Group]:
 @app.get("/groups/current")
 async def getCurrentGroup(room: int = config.DEFAULT_ROOM_ID) -> Group:
     return repository.getCurrentGroup()[str(room)]
+
+app.mount("/", StaticFiles(directory="public"), name="public")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=config.PORT)
