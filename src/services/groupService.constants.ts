@@ -1,6 +1,6 @@
 export const GroupServiceApiConstants = {
     baseApiUrl: import.meta.env.VITE_BASE_API_URL,
-    onNewCurrentGroupDelay: 20000,
+    onNewCurrentGroupDelay: 3000,
     onNewCurrentGroupEndpoint: "/groups/current",
     getGroupsEndpoint: "/groups",
 
