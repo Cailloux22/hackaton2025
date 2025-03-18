@@ -118,6 +118,9 @@ class GroupRepositoryOdoo(GroupRepository):
                 continue
 
             roomId = roomArray[0]
+            if not self.isToday(groupDict["start"]):
+                continue
+
 
             group = Group(name=groupDict["name"].split(" - ")[0], heurePassage=self._parse_date(groupDict["start"]), room=groupDict["appointment_resource_ids"][0])
             
@@ -136,6 +139,11 @@ class GroupRepositoryOdoo(GroupRepository):
         dateSplit = date.split(" ")[1]
         hourSplit = dateSplit.split(":")
         return f"{hourSplit[0]}:{hourSplit[1]}"
+    
+    def isToday(self, date:str) -> bool:
+        datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+        today = datetime.now()
+        return datetime_object == today 
 
     def getGroups(self) -> List[Group]:
         return self.groups
