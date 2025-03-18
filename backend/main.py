@@ -76,7 +76,7 @@ class Config:
     port: int = 8069
     db: str = "funlabrennes-teste-19048326"
     user: str = "test"
-    password: str = "ebfed02c7155123bfc2709e43ac94dca0e1e2572"
+    password: str = config.API_KEY
 
 class GroupRepositoryOdoo(GroupRepository):
     def __init__(self, config: Config):
