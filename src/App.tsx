@@ -62,7 +62,7 @@ function App() {
         <div >
           <h1 className="title2">Parties suivantes</h1>
           {
-            groups == undefined ? "Chargement ..." : groups.map(group => <p>{group.name}</p>)
+            groups == undefined ? "Chargement ..." : groups.map(group => <div className="flex justify-between"><span>{group.name}</span> <span>{group.heurePassage}</span></div>)
           }
         </div>
       </div>
